@@ -1,5 +1,5 @@
 {
-  "name": "liamcottle/instagram-sdk-php",
+  "name": "alexok/instagram-sdk-php",
   "type": "library",
   "description": "This is an unofficial SDK for the Instagram Private API in PHP",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "php": ">=5.5",
     "ext-curl": "*",
     "php-curl-class/php-curl-class": "^4.11",
-    "netresearch/jsonmapper": "^0.11.0",
+    "netresearch/jsonmapper": "^1.0",
     "ramsey/uuid": "^3.4"
   }
 }

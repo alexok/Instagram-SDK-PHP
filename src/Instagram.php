@@ -21,6 +21,7 @@ use Instagram\API\Request\FollowersFriendshipRequest;
 use Instagram\API\Request\FollowingFriendshipRequest;
 use Instagram\API\Request\InfoMediaRequest;
 use Instagram\API\Request\InfoUserRequest;
+use Instagram\API\Request\InsightsRequest;
 use Instagram\API\Request\LikedFeedRequest;
 use Instagram\API\Request\LikeMediaRequest;
 use Instagram\API\Request\LocationFeedRequest;
@@ -1489,4 +1490,23 @@ class Instagram {
 
     }
 
+    public function getInsights()
+    {
+        $day = date('d');
+
+        $request = new InsightsRequest($this, $day);
+        $response = $request->execute();
+
+        if (!$response->isOk()){
+            throw new InstagramException(sprintf("Failed to getInsights: [%s] %s", $response->getStatus(), $response->getMessage()));
+        }
+
+        return $response;
+
+//        $request = $this->request('insights/account_organic_insights')
+//            ->addParams('show_promotions_in_landing_page', 'true')
+//            ->addParams('first', $day);
+
+//        return $request->getResponse(new Response\InsightsResponse());
+    }
 }

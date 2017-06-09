@@ -1,1 +1,3 @@
 *local_test
+vendor
+composer.lock
