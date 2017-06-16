@@ -30,7 +30,6 @@ class InsightsRequest extends AuthenticatedBaseRequest
     public function getEndpoint()
     {
         return '/v1/insights/account_organic_insights/';
-//        return '/v1/insights/media_organic_insights';
     }
 
     public function getResponseObject()

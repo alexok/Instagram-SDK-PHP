@@ -27,6 +27,7 @@ use Instagram\API\Request\LikeMediaRequest;
 use Instagram\API\Request\LocationFeedRequest;
 use Instagram\API\Request\LoginRequest;
 use Instagram\API\Request\LogoutRequest;
+use Instagram\API\Request\MediaInsightsRequest;
 use Instagram\API\Request\PhotoUploadRequest;
 use Instagram\API\Request\PlacesFacebookSearchRequest;
 use Instagram\API\Request\RemoveProfilePictureAccountRequest;
@@ -1490,9 +1491,15 @@ class Instagram {
 
     }
 
-    public function getInsights()
+    /**
+     * @param null $day
+     * @return object
+     * @throws InstagramException
+     */
+    public function getInsights($day = null)
     {
-        $day = date('d');
+        if (empty($day))
+            $day = date('d');
 
         $request = new InsightsRequest($this, $day);
         $response = $request->execute();
@@ -1502,11 +1509,17 @@ class Instagram {
         }
 
         return $response;
+    }
 
-//        $request = $this->request('insights/account_organic_insights')
-//            ->addParams('show_promotions_in_landing_page', 'true')
-//            ->addParams('first', $day);
+    public function getMediaInsights($mediaId)
+    {
+        $request = new MediaInsightsRequest($this, $mediaId);
+        $response = $request->execute();
 
-//        return $request->getResponse(new Response\InsightsResponse());
+        if (!$response->isOk()){
+            throw new InstagramException(sprintf("Failed to getMediaInsights: [%s] %s", $response->getStatus(), $response->getMessage()));
+        }
+
+        return $response;
     }
 }
