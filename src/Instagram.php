@@ -43,6 +43,8 @@ use Instagram\API\Request\UnlikeMediaRequest;
 use Instagram\API\Request\UserFeedRequest;
 use Instagram\API\Request\UserMapRequest;
 use Instagram\API\Request\UserTagsFeedRequest;
+use Instagram\API\Response\InsightsResponse;
+use Instagram\API\Response\MediaInsightsResponse;
 use Instagram\API\Response\Model\FeedItem;
 use Instagram\API\Response\Model\Location;
 use Instagram\API\Response\Model\User;
@@ -1493,7 +1495,7 @@ class Instagram {
 
     /**
      * @param null $day
-     * @return object
+     * @return InsightsResponse
      * @throws InstagramException
      */
     public function getInsights($day = null)
@@ -1511,6 +1513,11 @@ class Instagram {
         return $response;
     }
 
+    /**
+     * @param $mediaId
+     * @return MediaInsightsResponse
+     * @throws InstagramException
+     */
     public function getMediaInsights($mediaId)
     {
         $request = new MediaInsightsRequest($this, $mediaId);
