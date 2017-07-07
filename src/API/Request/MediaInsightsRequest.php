@@ -39,6 +39,9 @@ class MediaInsightsRequest extends AuthenticatedBaseRequest
         return new MediaInsightsResponse();
     }
 
+    /**
+     * @return MediaInsightsResponse
+     */
     public function execute()
     {
         return parent::execute();

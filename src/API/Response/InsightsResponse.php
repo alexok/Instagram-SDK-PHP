@@ -30,10 +30,12 @@ class InsightsResponse extends BaseResponse
             foreach ($items as $item) {
                 $matches = null;
 
-                if (preg_match('~(?P<count>\d+) (?P<key>.+)~', $item->title, $matches)) {
+                if (preg_match('~(?P<count>[\d,]+) (?P<key>.+)~', $item->title, $matches)) {
                     $key = str_replace(' ', '_', $matches['key']);
+                    $value = preg_replace('~\D~', '', $matches['count']);
+
                     $data[$key] = [
-                        'count' => $matches['count'],
+                        'count' => $value,
                         'title' => $item->title,
                         'subtitle' => $item->subtitle,
                     ];
