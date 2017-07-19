@@ -142,6 +142,8 @@ class Instagram {
      */
     private $verifyPeer = true;
 
+    private $response;
+
     public function __construct(){
 
         //Set your Timezone
@@ -200,6 +202,11 @@ class Instagram {
 
         return json_encode($session);
 
+    }
+
+    public function getResponse()
+    {
+        return $this->response;
     }
 
     /**
@@ -452,7 +459,6 @@ class Instagram {
             }
 
             throw new InstagramException(sprintf("Login Failed: [%s] %s", $response->getStatus(), $response->getMessage()));
-
         }
 
         $this->setLoggedInUser($response->getLoggedInUser());
