@@ -450,11 +450,10 @@ class Instagram {
         $this->setDeviceId($this->generateDeviceId(md5($username.$password)));
 
         $request = new LoginRequest($this, $username, $password);
-        $response = $request->execute();
+        $this->response = $response = $request->execute();
 
-        if(!$response->isOk()){
-
-            if($response->isCheckpointRequired()){
+        if (!$response->isOk()){
+            if ($response->isCheckpointRequired()){
                 throw new InstagramException(sprintf("Login Failed: [%s] %s\nGo to this URL in your web browser to continue:\n%s", $response->getStatus(), $response->getMessage(), $response->getCheckpointUrl()));
             }
 
@@ -462,9 +461,7 @@ class Instagram {
         }
 
         $this->setLoggedInUser($response->getLoggedInUser());
-
         return $response;
-
     }
 
     /**
