@@ -9,13 +9,22 @@
 namespace Instagram\API\Request;
 
 
+use Instagram\API\Framework\RequestFile;
+use Instagram\API\Response\VideoUploadResponse;
 use Instagram\Instagram;
 
 class VideoUploadRequest extends AuthenticatedBaseRequest
 {
-    public function __construct(Instagram $instagram)
+    private $url;
+
+    public function __construct(Instagram $instagram, $path, $uploadParams)
     {
         parent::__construct($instagram);
+
+        $this->addHeader('Session-ID', $uploadParams['uploadId']);
+        $this->addHeader('job', $uploadParams['job']);
+
+        $this->addFile('video', new RequestFile($path, "application/octet-stream", sprintf("pending_media_%s.mp4", $uploadId)));
     }
 
     public function getMethod()
@@ -30,6 +39,14 @@ class VideoUploadRequest extends AuthenticatedBaseRequest
 
     public function getResponseObject()
     {
-        // TODO: Implement getResponseObject() method.
+        return new VideoUploadResponse();
+    }
+
+    /**
+     * @return VideoUploadResponse
+     */
+    public function execute()
+    {
+        return parent::execute();
     }
 }

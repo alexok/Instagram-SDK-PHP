@@ -5,6 +5,7 @@ namespace Instagram\API\Request;
 use Instagram\API\Framework\RequestFile;
 use Instagram\API\Response\PhotoUploadResponse;
 use Instagram\Instagram;
+use Instagram\Util\Helper;
 
 class PhotoUploadRequest extends AuthenticatedBaseRequest {
 
@@ -18,7 +19,7 @@ class PhotoUploadRequest extends AuthenticatedBaseRequest {
 
         parent::__construct($instagram);
 
-        $uploadId = number_format(round(microtime(true) * 1000), 0, '', '');
+        $uploadId = Helper::generateUploadId();
 
         $this->addParam("_csrftoken", $instagram->getCSRFToken());
         $this->addParam("_uuid", $instagram->getUUID());

@@ -6,6 +6,7 @@ use Instagram\API\Constants;
 use Instagram\API\Framework\InstagramException;
 use Instagram\API\Framework\Request;
 use Instagram\API\Framework\Response;
+use Instagram\API\Response\BaseResponse;
 use Instagram\Instagram;
 
 abstract class BaseRequest extends Request {
@@ -101,7 +102,7 @@ abstract class BaseRequest extends Request {
      *
      * Execute the Request
      *
-     * @return object Response Data
+     * @return object|BaseResponse Response Data
      * @throws InstagramException
      */
     public function execute(){

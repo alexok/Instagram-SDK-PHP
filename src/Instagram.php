@@ -19,6 +19,7 @@ use Instagram\API\Request\EditMediaRequest;
 use Instagram\API\Request\EditProfileAccountRequest;
 use Instagram\API\Request\FollowersFriendshipRequest;
 use Instagram\API\Request\FollowingFriendshipRequest;
+use Instagram\API\Request\VideoUploadGetUrlRequest;
 use Instagram\API\Request\InfoMediaRequest;
 use Instagram\API\Request\InfoUserRequest;
 use Instagram\API\Request\InsightsRequest;
@@ -43,11 +44,15 @@ use Instagram\API\Request\UnlikeMediaRequest;
 use Instagram\API\Request\UserFeedRequest;
 use Instagram\API\Request\UserMapRequest;
 use Instagram\API\Request\UserTagsFeedRequest;
+use Instagram\API\Request\VideoUploadRequest;
 use Instagram\API\Response\InsightsResponse;
 use Instagram\API\Response\MediaInsightsResponse;
 use Instagram\API\Response\Model\FeedItem;
 use Instagram\API\Response\Model\Location;
 use Instagram\API\Response\Model\User;
+use Instagram\API\Response\VideoUploadGetUrlResponse;
+use Instagram\API\Response\VideoUploadResponse;
+use Instagram\Util\Helper;
 use Ramsey\Uuid\Uuid;
 
 class Instagram {
@@ -1531,5 +1536,37 @@ class Instagram {
         }
 
         return $response;
+    }
+
+    public function postVideo($path, $caption = null)
+    {
+        if (!$this->isLoggedIn()){
+            throw new InstagramException("You must be logged in to call postPhoto().");
+        }
+
+        // 1. get upload url
+        $request = new VideoUploadGetUrlRequest($this);
+        $response = $request->execute(); /* @var VideoUploadGetUrlResponse $response */
+
+        if (!$response->isOk()) {
+            throw new InstagramException(sprintf('Failed to get uploadUrl: [%s] $s', $response->getStatus(), $response->getMessage()));
+        }
+
+        // 2. upload video
+        $url = $response->getVideoUploadUrls()[3];
+
+        $uploadParams = [
+            'uploadId' => $response->upload_id,
+            'uploadUrl' => $url['url'],
+            'job' => $url['job'],
+        ];
+
+        $request = new VideoUploadRequest($this, $path, $uploadParams);
+        $uploadResponse = $request->execute();
+
+        // 3. upload preview
+        // 4. configure timeline
+
+        return $uploadResponse;
     }
 }
