@@ -15,16 +15,24 @@ use Instagram\Instagram;
 
 class VideoUploadRequest extends AuthenticatedBaseRequest
 {
-    private $url;
+    private $uploadUrl;
 
     public function __construct(Instagram $instagram, $path, $uploadParams)
     {
         parent::__construct($instagram);
 
-        $this->addHeader('Session-ID', $uploadParams['uploadId']);
+        $this->uploadUrl = $uploadParams['uploadUrl'];
+        $uploadId = $uploadParams['uploadId'];
+
+        $this->addHeader('Session-ID', $uploadId);
         $this->addHeader('job', $uploadParams['job']);
 
         $this->addFile('video', new RequestFile($path, "application/octet-stream", sprintf("pending_media_%s.mp4", $uploadId)));
+    }
+
+    public function getUrl()
+    {
+        return $this->uploadUrl;
     }
 
     public function getMethod()
@@ -34,7 +42,7 @@ class VideoUploadRequest extends AuthenticatedBaseRequest
 
     public function getEndpoint()
     {
-        return "/v1/upload/video/";
+//        return '';
     }
 
     public function getResponseObject()

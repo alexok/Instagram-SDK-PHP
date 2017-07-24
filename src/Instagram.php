@@ -44,6 +44,7 @@ use Instagram\API\Request\UnlikeMediaRequest;
 use Instagram\API\Request\UserFeedRequest;
 use Instagram\API\Request\UserMapRequest;
 use Instagram\API\Request\UserTagsFeedRequest;
+use Instagram\API\Request\VideoUploadPreviewRequest;
 use Instagram\API\Request\VideoUploadRequest;
 use Instagram\API\Response\InsightsResponse;
 use Instagram\API\Response\MediaInsightsResponse;
@@ -51,6 +52,7 @@ use Instagram\API\Response\Model\FeedItem;
 use Instagram\API\Response\Model\Location;
 use Instagram\API\Response\Model\User;
 use Instagram\API\Response\VideoUploadGetUrlResponse;
+use Instagram\API\Response\VideoUploadPreviewResponse;
 use Instagram\API\Response\VideoUploadResponse;
 use Instagram\Util\Helper;
 use Ramsey\Uuid\Uuid;
@@ -1557,14 +1559,22 @@ class Instagram {
 
         $uploadParams = [
             'uploadId' => $response->upload_id,
-            'uploadUrl' => $url['url'],
-            'job' => $url['job'],
+            'uploadUrl' => $url->url,
+            'job' => $url->job,
         ];
 
         $request = new VideoUploadRequest($this, $path, $uploadParams);
         $uploadResponse = $request->execute();
 
+        if (!$uploadResponse->isOk()) {
+            throw new InstagramException(sprintf('Failed upload video: [%s] $s', $response->getStatus(), $response->getMessage()));
+        }
+
         // 3. upload preview
+        $photoData = Helper::createVideoPreview($path);
+        $request = new VideoUploadPreviewRequest($this, $photoData);
+        $request->execute();
+
         // 4. configure timeline
 
         return $uploadResponse;
