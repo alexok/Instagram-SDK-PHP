@@ -18,7 +18,7 @@ class VideoUploadPreviewRequest extends AuthenticatedBaseRequest
     public function __construct(Instagram $instagram, $photoData)
     {
         parent::__construct($instagram);
-//        $this->addFile('tmb', new RequestFile());
+        $this->addFileData('tmb', $photoData);
     }
 
     public function getMethod()

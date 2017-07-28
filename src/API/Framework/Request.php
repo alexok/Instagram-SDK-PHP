@@ -132,9 +132,11 @@ abstract class Request {
         $this->params[$key] = new \CURLFile($file->getPath(), $file->getMime(), $file->getName());
     }
 
-    public function addFileData($key)
+    public function addFileData($key, $contents)
     {
+        // TODO
 //        $this->params[$key] = new CU
+        $this->params[$key] = $contents;
     }
 
     /**
