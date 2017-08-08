@@ -10,6 +10,7 @@ namespace Instagram\Util;
 
 
 use InstagramAPI\ImageAutoResizer;
+use InstagramAPI\MediaAutoResizer;
 use InstagramAPI\Utils;
 
 class Helper
@@ -47,7 +48,7 @@ class Helper
             }
 
             // Automatically crop&resize the thumbnail to Instagram's requirements.
-            $resizer = new ImageAutoResizer($tmpFilename);
+            $resizer = new MediaAutoResizer($tmpFilename);
 //            $jpegContents = file_get_contents($resizer->getFile()); // Process&get.
 //            $resizer->deleteFile();
 
