@@ -1545,13 +1545,14 @@ class Instagram {
     public function postVideo($path, $caption = null)
     {
         if (!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call postPhoto().");
+            throw new InstagramException("You must be logged in to call postVideo().");
         }
 
         $uploadId = Helper::generateUploadId();
+        $info = Helper::getVideoInfo($path);
 
         // 1. get upload url
-        $request = new VideoUploadGetUrlRequest($this, $uploadId);
+        $request = new VideoUploadGetUrlRequest($this, $uploadId, $info);
         $response = $request->execute(); /* @var VideoUploadGetUrlResponse $response */
 
         if (!$response->isOk()) {
@@ -1560,30 +1561,20 @@ class Instagram {
 
         // 2. upload video
         $urls = $response->getVideoUploadUrls();
-        $url = array_shift($urls);
+        $uploadId = $response->upload_id;
 
-        $uploadParams = [
-            'uploadId' => $response->upload_id,
-            'uploadUrl' => $url->url,
-            'job' => $url->job,
-        ];
-
-//        $uploader = new PartUploader($path, $urls);
-//        $uploader->upload($uploadId);
-
-        $request = new VideoUploadRequest($this, $path, $uploadParams);
-        $uploadResponse = $request->execute();
+        $uploader = new PartUploader($path, $uploadId, $urls);
+        $uploader->upload($this);
 
         // 3. upload preview
         $previewFile = Helper::createVideoPreview($path);
-        $request = new VideoUploadPreviewRequest($this, $uploadParams['uploadId'], $previewFile);
+        $request = new VideoUploadPreviewRequest($this, $uploadId, $previewFile);
         $request->execute();
 
-//         4. configure timeline
-        $request = new VideoConfigureRequest($this, $uploadParams['uploadId'], '', $caption);
-        $configureResponse = $request->execute();
+        // 4. configure timeline
+        $request = new VideoConfigureRequest($this, $uploadId, $info, $caption);
+        $configure = $request->execute();
 
-        var_dump($configureResponse);
-        return 1;
+        return $configure;
     }
 }

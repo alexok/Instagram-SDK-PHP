@@ -12,7 +12,7 @@ class Constants {
     /*
      * User Agent for API Requests
      */
-    const USER_AGENT = "Instagram 8.0.0 Android (23/6.0.1; 640dpi; 1440x2560; samsung; SM-G935F; hero2lte; samsungexynos8890; en_NZ)";
+    const USER_AGENT = "Instagram 8.0.0 Android (23/6.0.1; 640dpi; 1440x2560; samsung; SM-G935F; hero2lte; samsungexynos8890; ru_RU)";
 
     /*
 	 * Key used to generate JSON Signatures
@@ -47,11 +47,11 @@ class Constants {
     /*
      * Your Timezone
      */
-    const TIMEZONE = "Pacific/Auckland";
+    const TIMEZONE = "Asia/Novosibirsk";
 
     /*
      * Your Timezone Offset
      */
-    const TIMEZONE_OFFSET = 43200;
+    const TIMEZONE_OFFSET = 25200;
 
 }

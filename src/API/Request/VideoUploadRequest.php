@@ -17,15 +17,14 @@ class VideoUploadRequest extends AuthenticatedBaseRequest
 {
     private $uploadUrl;
 
-    public function __construct(Instagram $instagram, $path, $uploadParams)
+    public function __construct(Instagram $instagram, $path, $uploadId, $uploadUrl)
     {
         parent::__construct($instagram);
 
-        $this->uploadUrl = $uploadParams['uploadUrl'];
-        $uploadId = $uploadParams['uploadId'];
+        $this->uploadUrl = $uploadUrl->url;
 
         $this->addHeader('Session-ID', $uploadId);
-        $this->addHeader('job', $uploadParams['job']);
+        $this->addHeader('job', $uploadUrl->job);
 
         $this->addFile('video', new RequestFile($path, "application/octet-stream", sprintf("pending_media_%s.mp4", $uploadId)));
     }

@@ -11,6 +11,8 @@ namespace Instagram\Util;
 
 use Curl\Curl;
 use Instagram\API\Framework\InstagramException;
+use Instagram\API\Request\VideoUploadRequest;
+use Instagram\API\Response\VideoUploadResponse;
 
 class PartUploader
 {
@@ -19,17 +21,23 @@ class PartUploader
 
     private $path;
     private $urls;
+    private $uploadId;
 
-    public function __construct($path, $urls)
+    public function __construct($path, $uploadId, $urls)
     {
         $this->path = $path;
+        $this->uploadId = $uploadId;
         $this->urls = $urls;
     }
 
-    public function upload($uploadId)
+    /**
+     * @throws InstagramException
+     * @return VideoUploadResponse
+     */
+    public function upload($instagram)
     {
         $length = filesize($this->path);
-        $sessionId = sprintf('%s-%d', $uploadId, Helper::hashCode($this->path));
+        $sessionId = sprintf('%s-%d', $this->uploadId, Helper::hashCode($this->path));
         $uploadUrl = array_shift($this->urls);
 
         $offset = 0;
@@ -48,6 +56,10 @@ class PartUploader
 //                    $chunk = min($length, self::MIN_CHUNK_SIZE);
 //                }
 
+                if ($offset + $chunk > $length) {
+                    $chunk = $length - $offset;
+                }
+
                 $chunkContent = fread($handle, $chunk);
                 $contentRange = sprintf('bytes %d-%d/%d', $offset, $offset + $chunk - 1, $length);
 
@@ -62,7 +74,6 @@ class PartUploader
                 $response = $curl->post($uploadUrl->url, $chunkContent);
                 $end = microtime(true);
 
-                $httpCode = $curl->httpStatusCode;
                 $rangeHeader = $curl->responseHeaders['Range'];
 
                 $newChunkSize = (int) ($chunk / ($end - $start) * 5);
@@ -70,6 +81,7 @@ class PartUploader
 
                 switch ($curl->httpStatusCode) {
                     case 200:
+                        return $this->createResponse($response);
                         break;
 
                     case 201:
@@ -111,6 +123,25 @@ class PartUploader
 
     }
 
+    /**
+     * @param $instagram
+     * @return VideoUploadResponse
+     * @throws InstagramException
+     */
+    public function uploadPerRequest($instagram)
+    {
+        $uploadUrl = array_shift($this->urls);
+
+        $request = new VideoUploadRequest($instagram, $this->path, $this->uploadId, $uploadUrl);
+        $response = $request->execute();
+
+        if (!$response->isOk()) {
+            throw new InstagramException(sprintf('Failed upload video: [%s] $s', $response->getStatus(), $response->getMessage()));
+        }
+
+        return $response;
+    }
+
     private function parseRange($rangeLine)
     {
         preg_match('/(?<start>\d+)-(?<end>\d+)\/(?<total>\d+)/', $rangeLine, $matches);
@@ -135,13 +166,15 @@ class PartUploader
         return $result;
     }
 
-    /*
-     * $request = new VideoUploadRequest($this, $path, $uploadParams);
-        $uploadResponse = $request->execute();
-        $uploadRawResponse = $request->getCachedResponse();
+    private function createResponse($response)
+    {
+        $mapper = new CustomJsonMapper();
+        $response = $mapper->map($response, new VideoUploadResponse());
 
-        if (!$uploadResponse->isOk()) {
+        if (!$response->isOk()) {
             throw new InstagramException(sprintf('Failed upload video: [%s] $s', $response->getStatus(), $response->getMessage()));
         }
-    */
+
+        return $response;
+    }
 }

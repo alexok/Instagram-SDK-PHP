@@ -10,6 +10,7 @@ namespace Instagram\Util;
 
 
 use InstagramAPI\ImageAutoResizer;
+use InstagramAPI\Utils;
 
 class Helper
 {
@@ -54,6 +55,12 @@ class Helper
         } finally {
             //@unlink($tmpFilename);
         }
+    }
+
+    public static function getVideoInfo($path)
+    {
+        Utils::$ffprobeBin = '/usr/local/bin/ffprobe';
+        return Utils::getVideoFileDetails($path);
     }
 
     public static function hashCode($string)
