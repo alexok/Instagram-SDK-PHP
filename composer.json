@@ -31,7 +31,6 @@
     "ext-curl": "*",
     "php-curl-class/php-curl-class": "^7.3",
     "netresearch/jsonmapper": "^1.0",
-    "ramsey/uuid": "^3.4",
-    "mgp25/instagram-php": "dev-master"
+    "ramsey/uuid": "^3.4"
   }
 }
