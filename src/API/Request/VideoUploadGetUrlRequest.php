@@ -16,16 +16,16 @@ use Instagram\Util\Helper;
 
 class VideoUploadGetUrlRequest extends AuthenticatedBaseRequest
 {
-    public function __construct(Instagram $instagram)
+    public function __construct(Instagram $instagram, $uploadId)
     {
         parent::__construct($instagram);
 
-        $this->addParam('upload_media_height', 640);
-        $this->addParam('upload_media_width', 640);
         $this->addParam('_csrftoken', $instagram->getCSRFToken());
         $this->addParam('_uuid', $instagram->getUUID());
-        $this->addParam('upload_media_duration_ms', 32667);
-        $this->addParam('upload_id', Helper::generateUploadId());
+        $this->addParam('upload_media_height', 322);
+        $this->addParam('upload_media_width', 196);
+        $this->addParam('upload_media_duration_ms', 8200);
+        $this->addParam('upload_id', $uploadId);
         $this->addParam('media_type', FeedItem::MEDIA_TYPE_VIDEO);
     }
 

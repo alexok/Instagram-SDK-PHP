@@ -30,11 +30,10 @@ abstract class BaseRequest extends Request {
 
         //$this->addHeader("Accept-Encoding", Constants::ACCEPT_ENCODING);
         $this->addHeader("Accept-Language", Constants::ACCEPT_LANGUAGE);
-
+        $this->addHeader("User-Agent", Constants::USER_AGENT);
         $this->addHeader("X-IG-Capabilities", Constants::IG_CAPABILITIES);
         $this->addHeader("X-IG-Connection-Type", Constants::IG_CONNECTION_TYPE);
-
-        $this->addHeader("User-Agent", Constants::USER_AGENT);
+        $this->addHeader("X-IG-Connection-Speed", mt_rand(1000, 3700).'kbps');
 
         $this->setInstagram($instagram);
         $this->setProxy($instagram->getProxy());

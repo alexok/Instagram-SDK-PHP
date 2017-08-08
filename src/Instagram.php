@@ -19,6 +19,7 @@ use Instagram\API\Request\EditMediaRequest;
 use Instagram\API\Request\EditProfileAccountRequest;
 use Instagram\API\Request\FollowersFriendshipRequest;
 use Instagram\API\Request\FollowingFriendshipRequest;
+use Instagram\API\Request\VideoConfigureRequest;
 use Instagram\API\Request\VideoUploadGetUrlRequest;
 use Instagram\API\Request\InfoMediaRequest;
 use Instagram\API\Request\InfoUserRequest;
@@ -55,6 +56,7 @@ use Instagram\API\Response\VideoUploadGetUrlResponse;
 use Instagram\API\Response\VideoUploadPreviewResponse;
 use Instagram\API\Response\VideoUploadResponse;
 use Instagram\Util\Helper;
+use Instagram\Util\PartUploader;
 use Ramsey\Uuid\Uuid;
 
 class Instagram {
@@ -1546,8 +1548,10 @@ class Instagram {
             throw new InstagramException("You must be logged in to call postPhoto().");
         }
 
+        $uploadId = Helper::generateUploadId();
+
         // 1. get upload url
-        $request = new VideoUploadGetUrlRequest($this);
+        $request = new VideoUploadGetUrlRequest($this, $uploadId);
         $response = $request->execute(); /* @var VideoUploadGetUrlResponse $response */
 
         if (!$response->isOk()) {
@@ -1555,7 +1559,8 @@ class Instagram {
         }
 
         // 2. upload video
-        $url = $response->getVideoUploadUrls()[3];
+        $urls = $response->getVideoUploadUrls();
+        $url = array_shift($urls);
 
         $uploadParams = [
             'uploadId' => $response->upload_id,
@@ -1563,20 +1568,22 @@ class Instagram {
             'job' => $url->job,
         ];
 
+//        $uploader = new PartUploader($path, $urls);
+//        $uploader->upload($uploadId);
+
         $request = new VideoUploadRequest($this, $path, $uploadParams);
         $uploadResponse = $request->execute();
 
-        if (!$uploadResponse->isOk()) {
-            throw new InstagramException(sprintf('Failed upload video: [%s] $s', $response->getStatus(), $response->getMessage()));
-        }
-
         // 3. upload preview
-        $photoData = Helper::createVideoPreview($path);
-        $request = new VideoUploadPreviewRequest($this, $photoData);
+        $previewFile = Helper::createVideoPreview($path);
+        $request = new VideoUploadPreviewRequest($this, $uploadParams['uploadId'], $previewFile);
         $request->execute();
 
-        // 4. configure timeline
+//         4. configure timeline
+        $request = new VideoConfigureRequest($this, $uploadParams['uploadId'], '', $caption);
+        $configureResponse = $request->execute();
 
-        return $uploadResponse;
+        var_dump($configureResponse);
+        return 1;
     }
 }

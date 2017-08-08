@@ -28,7 +28,9 @@ class Helper
 
         // Generate a temp thumbnail filename and delete if file already exists.
         $tmpPath = sys_get_temp_dir();
-        $tmpFilename = $tmpPath.'/'.md5($videoFilename).'.jpg';
+        $tmpFilename = $tmpPath .'/'. md5($videoFilename).'.jpg';
+        $tmpFilename = str_replace('//', '/', $tmpFilename);
+
         if (is_file($tmpFilename)) {
             @unlink($tmpFilename);
         }
@@ -45,12 +47,29 @@ class Helper
 
             // Automatically crop&resize the thumbnail to Instagram's requirements.
             $resizer = new ImageAutoResizer($tmpFilename);
-            $jpegContents = file_get_contents($resizer->getFile()); // Process&get.
-            $resizer->deleteFile();
+//            $jpegContents = file_get_contents($resizer->getFile()); // Process&get.
+//            $resizer->deleteFile();
 
-            return $jpegContents;
+            return $resizer->getFile();
         } finally {
-            @unlink($tmpFilename);
+            //@unlink($tmpFilename);
         }
+    }
+
+    public static function hashCode($string)
+    {
+        $result = 0;
+        for ($i = 0, $len = strlen($string); $i < $len; $i++) {
+            $result = (-$result + ($result << 5) + ord($string[$i])) & 0xFFFFFFFF;
+        }
+        if (PHP_INT_SIZE > 4) {
+            if ($result > 0x7FFFFFFF) {
+                $result -= 0x100000000;
+            } elseif ($result < -0x80000000) {
+                $result += 0x100000000;
+            }
+        }
+
+        return $result;
     }
 }

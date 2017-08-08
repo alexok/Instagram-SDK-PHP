@@ -100,7 +100,7 @@ class Response {
      */
     public function getCookies(){
 
-        $cookies = $this->curl->getResponseCookies();
+        $cookies = $this->curl->responseCookies;
 
         if($cookies != null){
             return $cookies;

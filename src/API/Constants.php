@@ -37,7 +37,7 @@ class Constants {
     /*
      * Connection Type
      */
-    const ACCEPT_LANGUAGE = "en-NZ";
+    const ACCEPT_LANGUAGE = "ru-RU";
 
     /*
      * Connection Type
