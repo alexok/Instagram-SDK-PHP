@@ -1510,7 +1510,7 @@ class Instagram {
      * @return InsightsResponse
      * @throws InstagramException
      */
-    public function getInsights($params)
+    public function getInsights($params = [])
     {
         $day = isset($params['day']) ? $params['day'] : date('d');
         $extraPage = isset($params['extraPage']) ? $params['extraPage'] : false;
