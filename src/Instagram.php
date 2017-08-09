@@ -1566,6 +1566,8 @@ class Instagram {
         $uploader = new PartUploader($path, $uploadId, $urls);
         $uploader->upload($this);
 
+        sleep(5);
+
         // 3. upload preview
         $previewFile = Helper::createVideoPreview($path);
         $request = new VideoUploadPreviewRequest($this, $uploadId, $previewFile);
