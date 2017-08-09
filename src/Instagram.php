@@ -1506,16 +1506,16 @@ class Instagram {
     }
 
     /**
-     * @param null $day
+     * @param array $params
      * @return InsightsResponse
      * @throws InstagramException
      */
-    public function getInsights($day = null)
+    public function getInsights($params)
     {
-        if (empty($day))
-            $day = date('d');
+        $day = isset($params['day']) ? $params['day'] : date('d');
+        $extraPage = isset($params['extraPage']) ? $params['extraPage'] : false;
 
-        $request = new InsightsRequest($this, $day);
+        $request = new InsightsRequest($this, $day, $extraPage);
         $response = $request->execute();
 
         if (!$response->isOk()){
@@ -1566,6 +1566,7 @@ class Instagram {
         $uploader = new PartUploader($path, $uploadId, $urls);
         $uploader->upload($this);
 
+        // configure delay
         sleep(5);
 
         // 3. upload preview
