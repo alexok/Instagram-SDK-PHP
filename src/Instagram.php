@@ -1569,7 +1569,11 @@ class Instagram {
         // 3. upload preview
         $previewFile = Helper::createVideoPreview($path);
         $request = new VideoUploadPreviewRequest($this, $uploadId, $previewFile);
-        $request->execute();
+        $previewResponse = $request->execute();
+
+        if (!$previewResponse->isOk()) {
+            throw new InstagramException(sprintf('Failed to upload preview: [%s] $s', $response->getStatus(), $response->getMessage()));
+        }
 
         // 4. configure timeline
         $request = new VideoConfigureRequest($this, $uploadId, $info, $caption);
