@@ -13,6 +13,16 @@ class InsightsResponse extends BaseResponse
 {
     public $instagram_user;
 
+    public function getInstagramUser()
+    {
+        return $this->instagram_user;
+    }
+
+    public function getInstagramInsightsNodes()
+    {
+        return $this->instagram_user->instagram_insights->nodes;
+    }
+
     public function getData()
     {
         return [
