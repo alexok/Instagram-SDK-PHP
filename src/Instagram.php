@@ -484,7 +484,7 @@ class Instagram {
     public function getTimelineFeed($maxId = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getTimelineFeed().");
+            throw new InstagramException("You must be logged in to call getTimelineFeed().", 2);
         }
 
         $request = new TimelineFeedRequest($this, $maxId);
@@ -510,7 +510,7 @@ class Instagram {
     public function getUserFeed($userId, $maxId = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getUserFeed().");
+            throw new InstagramException("You must be logged in to call getUserFeed().", 2);
         }
 
         if($userId instanceof User){
@@ -551,7 +551,7 @@ class Instagram {
     public function getLikedFeed($maxId = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getLikedFeed().");
+            throw new InstagramException("You must be logged in to call getLikedFeed().", 2);
         }
 
         $request = new LikedFeedRequest($this, $maxId);
@@ -577,7 +577,7 @@ class Instagram {
     public function getTagFeed($tag, $maxId = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getTagFeed().");
+            throw new InstagramException("You must be logged in to call getTagFeed().", 2);
         }
 
         $request = new TagFeedRequest($this, $tag, $maxId);
@@ -603,7 +603,7 @@ class Instagram {
     public function getLocationFeed($locationId, $maxId = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getLocationFeed().");
+            throw new InstagramException("You must be logged in to call getLocationFeed().", 2);
         }
 
         if($locationId instanceof Location){
@@ -633,7 +633,7 @@ class Instagram {
     public function getUserTagsFeed($userId, $maxId = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getUserTagsFeed().");
+            throw new InstagramException("You must be logged in to call getUserTagsFeed().", 2);
         }
 
         if($userId instanceof User){
@@ -662,7 +662,7 @@ class Instagram {
     public function likeMedia($mediaId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call likeMedia().");
+            throw new InstagramException("You must be logged in to call likeMedia().", 2);
         }
 
         if($mediaId instanceof FeedItem){
@@ -691,7 +691,7 @@ class Instagram {
     public function unlikeMedia($mediaId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call likeMedia().");
+            throw new InstagramException("You must be logged in to call likeMedia().", 2);
         }
 
         if($mediaId instanceof FeedItem){
@@ -721,7 +721,7 @@ class Instagram {
     public function deleteMedia($mediaId, $mediaType){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call deleteMedia().");
+            throw new InstagramException("You must be logged in to call deleteMedia().", 2);
         }
 
         if($mediaId instanceof FeedItem){
@@ -751,7 +751,7 @@ class Instagram {
     public function commentOnMedia($mediaId, $comment){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call commentOnMedia().");
+            throw new InstagramException("You must be logged in to call commentOnMedia().", 2);
         }
 
         if($mediaId instanceof FeedItem){
@@ -781,7 +781,7 @@ class Instagram {
     public function getMediaComments($mediaId, $maxId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getMediaComments().");
+            throw new InstagramException("You must be logged in to call getMediaComments().", 2);
         }
 
         if($mediaId instanceof FeedItem){
@@ -811,7 +811,7 @@ class Instagram {
     public function deleteCommentsFromMedia($mediaId, $commentIds){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call deleteCommentsFromMedia().");
+            throw new InstagramException("You must be logged in to call deleteCommentsFromMedia().", 2);
         }
 
         if($mediaId instanceof FeedItem){
@@ -840,7 +840,7 @@ class Instagram {
     public function getUserInfo($userId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getUserInfo().");
+            throw new InstagramException("You must be logged in to call getUserInfo().", 2);
         }
 
         if($userId instanceof User){
@@ -870,7 +870,7 @@ class Instagram {
     public function getUserFollowers($userId, $maxId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getUserFollowers().");
+            throw new InstagramException("You must be logged in to call getUserFollowers().", 2);
         }
 
         if($userId instanceof User){
@@ -900,7 +900,7 @@ class Instagram {
     public function getUserFollowing($userId, $maxId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getUserFollowing().");
+            throw new InstagramException("You must be logged in to call getUserFollowing().", 2);
         }
 
         if($userId instanceof User){
@@ -929,7 +929,7 @@ class Instagram {
     public function getUserMap($userId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getUserMap().");
+            throw new InstagramException("You must be logged in to call getUserMap().", 2);
         }
 
         if($userId instanceof User){
@@ -958,7 +958,7 @@ class Instagram {
     public function getMediaInfo($mediaId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getMediaInfo().");
+            throw new InstagramException("You must be logged in to call getMediaInfo().", 2);
         }
 
         if($mediaId instanceof FeedItem){
@@ -986,7 +986,7 @@ class Instagram {
     public function getCurrentUserAccount(){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call getCurrentUserAccount().");
+            throw new InstagramException("You must be logged in to call getCurrentUserAccount().", 2);
         }
 
         $request = new CurrentUserAccountRequest($this);
@@ -1016,7 +1016,7 @@ class Instagram {
     public function editUserProfile($firstname = null, $email = null, $phoneNumber = null, $gender = null, $biography = null, $externalUrl = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call editUserProfile().");
+            throw new InstagramException("You must be logged in to call editUserProfile().", 2);
         }
 
         $currentUser = $this->getCurrentUserAccount()->getUser();
@@ -1066,7 +1066,7 @@ class Instagram {
     public function setAccountPublic(){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call setAccountPublic().");
+            throw new InstagramException("You must be logged in to call setAccountPublic().", 2);
         }
 
         $request = new SetPublicAccountRequest($this);
@@ -1090,7 +1090,7 @@ class Instagram {
     public function setAccountPrivate(){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call setAccountPrivate().");
+            throw new InstagramException("You must be logged in to call setAccountPrivate().", 2);
         }
 
         $request = new SetPrivateAccountRequest($this);
@@ -1115,7 +1115,7 @@ class Instagram {
     public function showFriendship($userId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call showFriendship().");
+            throw new InstagramException("You must be logged in to call showFriendship().", 2);
         }
 
         if($userId instanceof User){
@@ -1144,7 +1144,7 @@ class Instagram {
     public function followUser($userId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call followUser().");
+            throw new InstagramException("You must be logged in to call followUser().", 2);
         }
 
         if($userId instanceof User){
@@ -1173,7 +1173,7 @@ class Instagram {
     public function unfollowUser($userId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call unfollowUser().");
+            throw new InstagramException("You must be logged in to call unfollowUser().", 2);
         }
 
         if($userId instanceof User){
@@ -1202,7 +1202,7 @@ class Instagram {
     public function blockUser($userId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call blockUser().");
+            throw new InstagramException("You must be logged in to call blockUser().", 2);
         }
 
         if($userId instanceof User){
@@ -1231,7 +1231,7 @@ class Instagram {
     public function unblockUser($userId){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call unblockUser().");
+            throw new InstagramException("You must be logged in to call unblockUser().", 2);
         }
 
         if($userId instanceof User){
@@ -1260,7 +1260,7 @@ class Instagram {
     public function searchTags($query){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call searchTags().");
+            throw new InstagramException("You must be logged in to call searchTags().", 2);
         }
 
         $request = new SearchTagsRequest($this, $query);
@@ -1285,7 +1285,7 @@ class Instagram {
     public function searchUsers($query){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call searchUsers().");
+            throw new InstagramException("You must be logged in to call searchUsers().", 2);
         }
 
         $request = new SearchUsersRequest($this, $query);
@@ -1310,7 +1310,7 @@ class Instagram {
     public function searchFacebookPlaces($query){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call searchFacebookPlaces().");
+            throw new InstagramException("You must be logged in to call searchFacebookPlaces().", 2);
         }
 
         $request = new PlacesFacebookSearchRequest($this);
@@ -1337,7 +1337,7 @@ class Instagram {
     public function searchFacebookPlacesByLocation($latitude, $longitude){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call searchFacebookPlacesByLocation().");
+            throw new InstagramException("You must be logged in to call searchFacebookPlacesByLocation().", 2);
         }
 
         $request = new PlacesFacebookSearchRequest($this);
@@ -1363,7 +1363,7 @@ class Instagram {
     public function changeProfilePicture($path){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call changeProfilePicture().");
+            throw new InstagramException("You must be logged in to call changeProfilePicture().", 2);
         }
 
         $request = new ChangeProfilePictureAccountRequest($this, $path);
@@ -1387,7 +1387,7 @@ class Instagram {
     public function removeProfilePicture(){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call removeProfilePicture().");
+            throw new InstagramException("You must be logged in to call removeProfilePicture().", 2);
         }
 
         $request = new RemoveProfilePictureAccountRequest($this);
@@ -1413,7 +1413,7 @@ class Instagram {
     public function postPhoto($path, $caption = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call postPhoto().");
+            throw new InstagramException("You must be logged in to call postPhoto().", 2);
         }
 
         $request = new PhotoUploadRequest($this, $path);
@@ -1446,7 +1446,7 @@ class Instagram {
     public function editMedia($mediaId, $caption = null){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call editMedia().");
+            throw new InstagramException("You must be logged in to call editMedia().", 2);
         }
 
         if($mediaId instanceof FeedItem){
@@ -1497,7 +1497,7 @@ class Instagram {
     public function logout(){
 
         if(!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call logout().");
+            throw new InstagramException("You must be logged in to call logout().", 2);
         }
 
         $request = new LogoutRequest($this);
@@ -1545,7 +1545,7 @@ class Instagram {
     public function postVideo($path, $caption = null)
     {
         if (!$this->isLoggedIn()){
-            throw new InstagramException("You must be logged in to call postVideo().");
+            throw new InstagramException("You must be logged in to call postVideo().", 2);
         }
 
         $uploadId = Helper::generateUploadId();
