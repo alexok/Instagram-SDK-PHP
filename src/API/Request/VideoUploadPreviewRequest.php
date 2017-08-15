@@ -16,15 +16,19 @@ use Instagram\Util\Helper;
 
 class VideoUploadPreviewRequest extends AuthenticatedBaseRequest
 {
-    public function __construct(Instagram $instagram, $uploadId, $file)
+    private $file;
+
+    public function __construct(Instagram $instagram, $uploadId, $fileContent)
     {
         parent::__construct($instagram);
+
+        $this->file = $this->createFile($fileContent);
 
         $this->addParam('_uuid', $instagram->getUUID());
         $this->addParam('_csrftoken', $instagram->getCSRFToken());
         $this->addParam('upload_id', $uploadId);
         $this->addParam('image_compression', '{"lib_name":"jt","lib_version":"1.3.0","quality":"87"}');
-        $this->addFile('photo', new RequestFile($file, "application/octet-stream", sprintf("pending_media_%s.jpg", Helper::generateUploadId())));
+        $this->addFile('photo', new RequestFile($this->file, "application/octet-stream", sprintf("pending_media_%s.jpg", Helper::generateUploadId())));
     }
 
     public function getMethod()
@@ -40,5 +44,22 @@ class VideoUploadPreviewRequest extends AuthenticatedBaseRequest
     public function getResponseObject()
     {
         return new VideoUploadPreviewResponse();
+    }
+
+    public function execute()
+    {
+        $status = parent::execute();
+
+        if (is_file($this->file))
+            @unlink($this->file);
+
+        return $status;
+    }
+
+    private function createFile($content)
+    {
+        $path = sys_get_temp_dir(). DIRECTORY_SEPARATOR. uniqid().'.jpg';
+        file_put_contents($path, $content);
+        return $path;
     }
 }

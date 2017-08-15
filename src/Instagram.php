@@ -1570,8 +1570,8 @@ class Instagram {
         sleep(5);
 
         // 3. upload preview
-        $previewFile = Helper::createVideoPreview($path);
-        $request = new VideoUploadPreviewRequest($this, $uploadId, $previewFile);
+        $previewFileContent = Helper::createVideoPreview($path);
+        $request = new VideoUploadPreviewRequest($this, $uploadId, $previewFileContent);
         $previewResponse = $request->execute();
 
         if (!$previewResponse->isOk()) {

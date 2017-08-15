@@ -49,12 +49,12 @@ class Helper
 
             // Automatically crop&resize the thumbnail to Instagram's requirements.
             $resizer = new MediaAutoResizer($tmpFilename);
-//            $jpegContents = file_get_contents($resizer->getFile()); // Process&get.
-//            $resizer->deleteFile();
-
-            return $resizer->getFile();
+            $jpegContents = file_get_contents($resizer->getFile()); // Process&get.
+            $resizer->deleteFile();
+            
+            return $jpegContents;
         } finally {
-            //@unlink($tmpFilename);
+            @unlink($tmpFilename);
         }
     }
 
