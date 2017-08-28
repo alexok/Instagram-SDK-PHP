@@ -1564,7 +1564,7 @@ class Instagram {
         $uploadId = $response->upload_id;
 
         $uploader = new PartUploader($path, $uploadId, $urls);
-        $uploader->upload($this);
+        $uploader->uploadPerRequest($this);
 
         // configure delay
         sleep(5);
