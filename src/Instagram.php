@@ -1564,10 +1564,10 @@ class Instagram {
         $uploadId = $response->upload_id;
 
         $uploader = new PartUploader($path, $uploadId, $urls);
-        $uploader->uploadPerRequest($this);
+        $uploader->upload($this);
 
         // configure delay
-        sleep(5);
+        sleep(4);
 
         // 3. upload preview
         $previewFileContent = Helper::createVideoPreview($path);

@@ -23,10 +23,10 @@ class VideoUploadGetUrlRequest extends AuthenticatedBaseRequest
         $this->addParam('_csrftoken', $instagram->getCSRFToken());
         $this->addParam('_uuid', $instagram->getUUID());
         $this->addParam('upload_id', $uploadId);
-        $this->addParam('media_type', FeedItem::MEDIA_TYPE_VIDEO);
         $this->addParam('upload_media_height', $info['width']);
         $this->addParam('upload_media_width', $info['height']);
         $this->addParam('upload_media_duration_ms', $info['duration']*1000);
+        $this->addParam('media_type', FeedItem::MEDIA_TYPE_VIDEO);
     }
 
     public function getMethod()

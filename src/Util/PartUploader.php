@@ -38,23 +38,27 @@ class PartUploader
     {
         $length = filesize($this->path);
         $sessionId = sprintf('%s-%d', $this->uploadId, Helper::hashCode($this->path));
-        $uploadUrl = array_shift($this->urls);
+        $uploadUrl = null;
 
         $offset = 0;
         $chunk = min($length, self::MIN_CHUNK_SIZE);
-//        $attempt = 0;
+        $attempt = 0;
 
         $handle = fopen($this->path, 'rb');
 
         try {
             while (true) {
-//                if ($uploadUrl === null) {
-//                    $uploadUrl = array_shift($uploadUrls);
+                if (++$attempt > 3) {
+                    throw new \InstagramAPI\Exception\UploadFailedException(sprintf('Upload of "%s" failed. All retries have failed.', basename($this->path)));
+                }
+
+                if ($uploadUrl === null) {
+                    $uploadUrl = array_shift($this->urls);
 //
-//                    $attempt = 1; // As if "++$attempt" had ran once, above.
-//                    $offset = 0;
+                    $attempt = 1; // As if "++$attempt" had ran once, above.
+                    $offset = 0;
 //                    $chunk = min($length, self::MIN_CHUNK_SIZE);
-//                }
+                }
 
                 if ($offset + $chunk > $length) {
                     $chunk = $length - $offset;
@@ -71,7 +75,7 @@ class PartUploader
                 $curl->setHeader('job', $uploadUrl->job);
 
                 $start = microtime(true);
-                $response = $curl->post($uploadUrl->url, $chunkContent);
+                $response = $curl->post($this->formatUrl($uploadUrl->url), $chunkContent);
                 $end = microtime(true);
 
                 $rangeHeader = $curl->responseHeaders['Range'];
@@ -100,6 +104,7 @@ class PartUploader
                             $chunk = min($newChunkSize, $length - $offset);
                         }
 
+                        $attempt = 0;
                         break;
 
                     case 400:
@@ -176,5 +181,14 @@ class PartUploader
         }
 
         return $response;
+    }
+
+    private function formatUrl($url)
+    {
+        if (preg_match('/upload(?P<sub>.+)\.instagram\.com/', $url, $matches)) {
+            return str_replace($matches['sub'], '', $url);
+        }
+
+        return $url;
     }
 }
